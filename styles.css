@@ -1,0 +1,39 @@
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;      /* Autorise le passage à la ligne */
+  justify-content: center; /* Centre les cases s'il y a du vide à droite */
+  gap: 15px;            /* Espace entre les cases */
+  list-style: none;
+  padding: 20px;
+}
+
+.nav-links li {
+flex: 1 0 300px; /* Le "1" permet à la case de s'étirer si besoin */
+max-width: 500px; 
+  
+  height: 200px;        
+  background-color: #3498db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-links a {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  justify-content: center; 
+  gap: 10px;              
+  
+  text-decoration: none;
+  color: #333;
+  padding: 15px;
+  height: 100%;           
+}
+
+.menu-icon {
+  width: auto;      
+  height: 70%;    
+  display: block;   
+}
