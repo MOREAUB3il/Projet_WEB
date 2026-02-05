@@ -1,4 +1,20 @@
-.nav-links {
+.Barre {
+  display: flex;
+  align-items: center; /* Aligne tout le monde verticalement */
+  list-style: none;
+  padding: 10px;
+  background-color: #f4f4f4;
+}
+
+.Barre li {
+  padding: 10px;
+}
+
+.push-right {
+  margin-left: auto; /* Absorbe tout l'espace vide à gauche de cet élément */
+}
+
+.BLOC {
   display: flex;
   flex-wrap: wrap;      /* Autorise le passage à la ligne */
   justify-content: center; /* Centre les cases s'il y a du vide à droite */
@@ -7,19 +23,18 @@
   padding: 20px;
 }
 
-.nav-links li {
+.BLOC li {
 flex: 1 0 300px; /* Le "1" permet à la case de s'étirer si besoin */
 max-width: 500px; 
   
   height: 200px;        
-  background-color: #3498db;
-  border-radius: 8px;
+  background-color: bisque;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.nav-links a {
+.BLOC a {
   display: flex;
   flex-direction: column; 
   align-items: center;    
@@ -36,4 +51,39 @@ max-width: 500px;
   width: auto;      
   height: 70%;    
   display: block;   
+}
+
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    width: 250px;
+    transition: border-color 0.3s;
+}
+
+.Brecherche {
+    padding: 10px 20px;
+    background-color: rosybrown;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
