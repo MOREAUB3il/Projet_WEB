@@ -4,8 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
+    <link href="../css/connexion.css" rel="stylesheet">
 </head>
 <body>
-    
+    <div class="formulaire visible" id="connexion">
+            <h1>Connexion</h1>
+            
+            <form action="" method="post">
+                <label for="login_id">Votre Nom :</label>
+                <input type="text" id="login_id" required>
+                
+                <label for="login_mdp">Mot de passe :</label>
+                <input type="password" id="login_mdp" required>
+                <p id="msg-login-mdp" class="message-erreur"></p>
+                
+                <button type="submit">Se Connecter</button>
+            </form>
+
+            <a id="lcompte" class="lien-bascule" href="#">Créer un compte</a>
+        </div>
+        <div class="formulaire invisible" id="compte">
+            <h1>Créer un compte</h1>
+            
+            <form action="" method="post" id="inscription">
+                <label for="new_nom">Votre Nom :</label>
+                <input type="text" id="new_nom" required>
+            
+                <label for="new_mail">Adresse mail :</label>
+                <input type="email" id="new_mail" required>
+            
+                <label for="new_mdp">Mot de passe :</label>
+                <input type="password" id="new_mdp" required>
+                <p id="msg-new-mdp" class="message-erreur"></p>
+            
+                <label for="new_vmdp">Vérification Mot de passe :</label>
+                <input type="password" id="new_vmdp" required>
+                <p id="msg-new-vmdp" class="message-erreur"></p>
+                <button type="submit">S'inscrire</button>
+            </form>
+            
+            <a id="lconnexion" class="lien-bascule" href="#">J'ai déjà un compte</a>
+        </div>
+        <script src="../js/connexion.js"></script>
 </body>
 </html>

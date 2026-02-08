@@ -1,0 +1,81 @@
+
+body {
+
+    position: relative;
+    height: 100vh; 
+    width: 100%;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: peru;
+    color: bisque;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: rgb(205, 121, 37);
+}
+
+
+.formulaire {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    background: bisque;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+}
+.lien-bascule {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: peru;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+.visible {
+    opacity: 1;
+    z-index: 1000;
+    visibility: visible;
+}
+
+.invisible {
+    opacity: 0;
+    z-index: 0;
+    visibility: hidden;
+}
