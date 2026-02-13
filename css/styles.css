@@ -16,15 +16,15 @@
 
 .BLOC {
   display: flex;
-  flex-wrap: wrap;      /* Autorise le passage à la ligne */
-  justify-content: center; /* Centre les cases s'il y a du vide à droite */
-  gap: 15px;            /* Espace entre les cases */
+  flex-wrap: wrap;      
+  justify-content: center; 
+  gap: 15px;
   list-style: none;
   padding: 20px;
 }
 
 .BLOC li {
-flex: 1 0 300px; /* Le "1" permet à la case de s'étirer si besoin */
+flex: 1 0 300px;
 max-width: 500px; 
   
   height: 200px;        
