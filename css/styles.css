@@ -1,6 +1,6 @@
 .Barre {
   display: flex;
-  align-items: center; /* Aligne tout le monde verticalement */
+  align-items: center;
   list-style: none;
   padding: 10px;
   background-color: #f4f4f4;
@@ -11,7 +11,7 @@
 }
 
 .push-right {
-  margin-left: auto; /* Absorbe tout l'espace vide à gauche de cet élément */
+  margin-left: auto;
 }
 
 .BLOC {
@@ -32,6 +32,12 @@ max-width: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 20px;
+}
+
+.BLOC li:hover {
+  background-color: rgb(205, 121, 37);
+  scale: 1.125;
 }
 
 .BLOC a {
@@ -86,4 +92,89 @@ max-width: 500px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: bisque;
+  color: black;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 180px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 5px;
+  margin-top: 0;
+  padding-top: 10px
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.deco { color: #e74c3c !important; }
+
+.heart-container {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.heart-icon {
+  width: 25px;
+  height: 25px;
+  fill: transparent;
+  stroke: black;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.heart-container.is-active .heart-icon {
+  fill: #e74c3c;
+  filter: invert(47%) sepia(58%) saturate(4311%) hue-rotate(337deg) brightness(93%) contrast(90%);
+}
+.bookmark-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: inline-flex;
+}
+
+.bookmark-icon {
+  width: 25px; 
+  height: 25px;
+  fill: transparent;
+  stroke: black;
+  stroke-width: 2.5;
+  transition: all 0.3s ease;
+}
+
+.bookmark-btn.is-active .bookmark-icon {
+  fill: rgb(235, 235, 73); 
 }
