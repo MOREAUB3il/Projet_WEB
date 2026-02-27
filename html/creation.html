@@ -26,6 +26,23 @@
     </ul>
 </header>
 <body>
-    
+    <div class="zone">
+        <div class="depot">
+            <div id="depot-img" class="depot">
+             <span id="texte-img">Glissez et déposez une image ici</span>
+             <input type="file" id="input-img" accept="image" hidden>
+            </div>
+            <div id="depot-vid" class="depot">
+             <p>Glissez et déposez une video ici</p>
+             <input type="file" id="input-vid" accept="video" hidden>
+            </div>
+            <div id ="depot-text" class="depot">
+                <form action="" method="post">
+                <label for="description">Votre Description :</label>
+                <input type="description" id="text" required>
+            </div>
+        </div>
+    </div>
+    <script src="../js/creation.js"></script>
 </body>
 </html>

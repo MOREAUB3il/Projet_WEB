@@ -178,3 +178,39 @@ max-width: 500px;
 .bookmark-btn.is-active .bookmark-icon {
   fill: rgb(235, 235, 73); 
 }
+
+.zone{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  
+}
+
+.depot {
+    width: 800px;
+    height: 200px;
+    border: 3px dashed rgb(205, 121, 37);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: grey;
+    cursor: pointer;
+    background-color: bisque;
+    background-size: cover;   
+    transition: all 0.3s ease;
+}
+.depot.survol {
+    border-color: bisque;
+    background-color: gray;
+    color: black;
+}
+.depot.avec-image {
+    border-style: solid;
+    border-color: transparent;
+}
+.depot.avec-image #texte-img {
+    display: none;
+}
