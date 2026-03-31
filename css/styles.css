@@ -214,3 +214,13 @@ max-width: 500px;
 .depot.avec-image #texte-img {
     display: none;
 }
+.heart-icon {
+    fill: none;
+    stroke: currentColor;
+    transition: fill 0.3s ease;
+}
+
+.heart-container.active .heart-icon {
+    fill: red; /* Le cœur devient rouge quand il est actif */
+    stroke: red;
+}
