@@ -55,8 +55,8 @@ if ($action === 'register') {
     }
 
     try {
-        // Vérifie si le nom d'utilisateur ou l'email existe déjà.
-        $stmt = $pdo->prepare('SELECT id FROM users WHERE username = :username OR email = :email');
+        // Vérifie si le nom d'utilisateur ou l'email existe déjà dans la table "utilisateurs".
+        $stmt = $pdo->prepare('SELECT id FROM utilisateurs WHERE nom_utilisateur = :username OR email = :email');
         $stmt->execute([':username' => $username, ':email' => $email]);
 
         if ($stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -65,14 +65,17 @@ if ($action === 'register') {
 
         // Hash le mot de passe avant de l'enregistrer.
         $pwHash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password_hash)');
+        
+        // Insertion avec les noms de colonnes en français
+        $stmt = $pdo->prepare('INSERT INTO utilisateurs (nom_utilisateur, email, mot_de_passe) VALUES (:username, :email, :password_hash)');
         $stmt->execute([':username' => $username, ':email' => $email, ':password_hash' => $pwHash]);
 
         // Connecte automatiquement l'utilisateur après son inscription.
         $_SESSION['user'] = [
             'id' => (int) $pdo->lastInsertId(),
             'username' => $username,
-            'email' => $email
+            'email' => $email,
+            'role' => 'utilisateur' // On garde trace du rôle dans la session
         ];
         header('Location: ../php/menu.php');
         exit;
@@ -94,14 +97,19 @@ if ($action === 'register') {
     }
 
     try {
-        // Recherche l'utilisateur par nom ou par email.
-        $stmt = $pdo->prepare('SELECT id, username, email, password_hash FROM users WHERE username = :username OR email = :username');
+        // Recherche l'utilisateur par nom ou par email dans la table "utilisateurs".
+        $stmt = $pdo->prepare('SELECT id, nom_utilisateur, email, mot_de_passe, role FROM utilisateurs WHERE nom_utilisateur = :username OR email = :username');
         $stmt->execute([':username' => $username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Vérifie le mot de passe saisi avec le hash stocké en base.
-        if ($user && password_verify($password, $user['password_hash'])) {
-            $_SESSION['user'] = ['id' => $user['id'], 'username' => $user['username'], 'email' => $user['email']];
+        if ($user && password_verify($password, $user['mot_de_passe'])) {
+            $_SESSION['user'] = [
+                'id' => $user['id'], 
+                'username' => $user['nom_utilisateur'], 
+                'email' => $user['email'],
+                'role' => $user['role']
+            ];
             header('Location: ../php/menu.php');
             exit;
         }
