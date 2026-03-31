@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button class="dropbtn">Mon Compte ▼</button>
                 <div class="dropdown-content">
                     <a href="menu.php">Mes créations</a>
-                    <a href="#">Favoris</a>
+                    <a href="mes_favoris.php">Favoris</a>
                     <a href="menu.php">Menu</a>
                     <hr>
                     <a href="deconnexion.php" class="deco">Déconnexion</a>

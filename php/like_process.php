@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/bdd.php';
+header('Content-Type: application/json; charset=utf-8');
 
 // On vérifie que l'utilisateur est connecté et qu'on a un ID de capsule
 if (!isset($_SESSION['user']) || !isset($_POST['capsule_id'])) {
