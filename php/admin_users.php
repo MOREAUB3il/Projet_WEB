@@ -62,9 +62,7 @@ $users = $stmt->fetchAll();
             </li>
         </ul>
     </header>
-
-    <h2 style="text-align: center; margin-top: 30px; color: peru;">👥 Gestion des utilisateurs</h2>
-
+    
     <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
         <a href="admin_dashboard.php"><button class="Brecherche">Accueil Admin</button></a>
         <a href="admin_users.php"><button class="Brecherche" style="background-color: rosybrown;">Gérer les Utilisateurs</button></a>
