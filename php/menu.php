@@ -48,6 +48,10 @@ try {
                     <a href="creation.php">Mes créations</a>
                     <a href="mes_favoris.php">Favoris (<?= $favoriteCount ?>)</a>
                     <a href="creation.php">Créer</a>
+                    <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+                        <hr>
+                        <a href="admin_dashboard.php" style="color: #ffc107; font-weight: bold;">🛡️ Panneau Admin</a>
+                    <?php endif; ?>
                     <hr>
                     <a href="../html/page_accueil.html" class="deco">Déconnexion</a>
                 </div>
