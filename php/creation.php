@@ -83,18 +83,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <header>
-     <div class="logo"><strong>Bloutub</strong></div><br>
+     <div class="logo"><strong></strong></div><br>
     <ul class="Barre">
         <li><a href="#"><input type="text" placeholder="Rechercher..." class="search-input"><button type="submit" class="Brecherche">Rechercher</button></a></li> 
-        <li class="push-right">
+         <li class="push-right">
             <div class="dropdown">
                 <button class="dropbtn">Mon Compte ▼</button>
                 <div class="dropdown-content">
-                    <a href="menu.php">Mes créations</a>
+                    <a href="mes_creations.php">Mes créations</a>
                     <a href="mes_favoris.php">Favoris</a>
-                    <a href="menu.php">Menu</a>
+                    <a href="../php/menu.php">Menu</a>
+                    <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+                        <hr>
+                        <a href="admin_dashboard.php" style="color: #ffc107; font-weight: bold;">🛡️ Panneau Admin</a>
+                    <?php endif; ?>
                     <hr>
-                    <a href="deconnexion.php" class="deco">Déconnexion</a>
+                    <a href="../html/page_accueil.html" class="deco">Déconnexion</a>
                 </div>
             </div>
         </li>

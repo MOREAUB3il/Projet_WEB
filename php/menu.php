@@ -45,7 +45,7 @@ try {
             <div class="dropdown">
                 <button class="dropbtn">Mon Compte ▼</button>
                 <div class="dropdown-content">
-                    <a href="creation.php">Mes créations</a>
+                    <a href="mes_creations.php">Mes créations</a>
                     <a href="mes_favoris.php">Favoris (<?= $favoriteCount ?>)</a>
                     <a href="creation.php">Créer</a>
                     <?php if ($_SESSION['user']['role'] === 'admin'): ?>

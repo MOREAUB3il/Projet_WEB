@@ -37,7 +37,7 @@ $latest_users = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord Admin - BlOutub</title>
+    <title>Tableau de bord Admin - Bloutub</title>
     <link rel="stylesheet" href="../css/styles.css">
     <style>
         * {
