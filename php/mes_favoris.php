@@ -64,7 +64,7 @@ $favoriteCount = count($mes_favoris);
         <?php foreach ($mes_favoris as $capsule): ?>
             <?php $isFavori = !empty($capsule['is_favori']); ?>
             <li>
-                <a href="#">
+                <a href="view_capsule.php?id=<?= $capsule['id'] ?>">
                     <img src="<?= htmlspecialchars($capsule['chemin_image']) ?>" alt="Capsule" class="menu-icon" onerror="this.src='../assets/image.png';">
                     <span>
                         <?= htmlspecialchars($capsule['description']) ?> <br>
@@ -72,12 +72,12 @@ $favoriteCount = count($mes_favoris);
                     </span>
                 </a>
                 <div class="like">
-                    <button class="bookmark-btn <?= $isFavori ? 'is-active' : '' ?>" onclick="toggleBookmark(this, <?= $capsule['id'] ?>)">
+                    <button class="bookmark-btn <?= $isFavori ? 'is-active' : '' ?>" onclick="event.stopPropagation(); toggleBookmark(this, <?= $capsule['id'] ?>)">
                         <svg class="bookmark-icon" viewBox="0 0 32 32">
                             <path d="M6 5C6 3.89543 6.89543 3 8 3H24C25.1046 3 26 3.89543 26 5V28L16 21L6 28V5Z" />
                         </svg>
                     </button>
-                    <button class="remove-btn" onclick="removeFavorite(this, <?= $capsule['id'] ?>)">Retirer</button>
+                    <button class="remove-btn" onclick="event.stopPropagation(); removeFavorite(this, <?= $capsule['id'] ?>)">Retirer</button>
                 </div>
             </li>
         <?php endforeach; ?>
