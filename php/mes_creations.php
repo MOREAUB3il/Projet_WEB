@@ -14,5 +14,5 @@ $stmt = $pdo->prepare('
 $stmt->execute([$user_id]);
 $mes_capsules = $stmt->fetchAll();
 
-// Ici tu peux réutiliser le même HTML que menu.php pour l'affichage
-include 'menu_template.php'; // Ou copie-colle le HTML de menu.php
+
+include 'menu_template.php'; 

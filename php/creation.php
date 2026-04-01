@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <header>
-     <div class="logo"><strong>MonSite</strong></div><br>
+     <div class="logo"><strong>Bloutub</strong></div><br>
     <ul class="Barre">
         <li><a href="#"><input type="text" placeholder="Rechercher..." class="search-input"><button type="submit" class="Brecherche">Rechercher</button></a></li> 
         <li class="push-right">
