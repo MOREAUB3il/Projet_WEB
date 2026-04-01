@@ -12,270 +12,126 @@ $users = $stmt->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des utilisateurs - Admin</title>
     <link rel="stylesheet" href="../css/styles.css">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
-        }
-        header {
-            background-color: #f4f4f4;
-            padding: 15px 20px;
-            border-bottom: 2px solid rosybrown;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: peru;
-            margin-bottom: 10px;
-        }
-        .admin-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .admin-header {
+        .admin-bloc {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 3px solid peru;
-            padding-bottom: 15px;
-        }
-        .admin-header h1 {
-            color: peru;
-            font-size: 32px;
-        }
-        .admin-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
             flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 1200px;
         }
-        .admin-nav a {
-            padding: 12px 20px;
-            background-color: peru;
-            color: bisque;
-            text-decoration: none;
-            border: 2px solid peru;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .admin-nav a:hover {
-            background-color: rgb(205, 121, 37);
-            border-color: rgb(205, 121, 37);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .admin-nav a.active {
-            background-color: rosybrown;
-            color: white;
-            border-color: rosybrown;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            margin-top: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        th {
-            background-color: peru;
-            color: bisque;
-            padding: 14px;
-            text-align: left;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #e0d0c0;
-            color: #333;
-        }
-        tr:hover {
-            background-color: #faf0e6;
-        }
-        .badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .badge-admin {
-            background-color: rgb(205, 121, 37);
-            color: white;
-        }
-        .badge-user {
-            background-color: rosybrown;
-            color: bisque;
-        }
-        .action-buttons {
+        
+        .admin-bloc li {
+            flex: 1 0 300px;
+            max-width: 400px;
+            min-height: 200px; /* Un peu moins haut que les capsules car pas d'image */
+            background-color: bisque;
             display: flex;
-            gap: 5px;
-        }
-        .btn-small {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.2s;
-        }
-        .btn-edit {
-            background-color: peru;
-            color: bisque;
-        }
-        .btn-edit:hover {
-            background-color: rgb(205, 121, 37);
-        }
-        .btn-delete {
-            background-color: rosybrown;
-            color: bisque;
-        }
-        .btn-delete:hover {
-            background-color: rgb(165, 42, 42);
-        }
-        .btn-promote {
-            background-color: rgb(205, 121, 37);
-            color: bisque;
-        }
-        .btn-promote:hover {
-            background-color: peru;
-        }
-        .filter-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, bisque 0%, #fff 100%);
-            border: 2px solid peru;
-            border-radius: 8px;
-        }
-        .filter-section input, .filter-section select {
-            padding: 8px 12px;
-            border: 2px solid peru;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-        .logout-btn {
-            background-color: rgb(205, 121, 37);
-            color: bisque;
-            padding: 12px 20px;
-            border: 2px solid rgb(205, 121, 37);
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .logout-btn:hover {
-            background-color: rosybrown;
-            border-color: rosybrown;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            flex-direction: column;
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: none !important;
+            transform: none !important;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">🎬 BlOutub Admin</div>
+        <div class="logo"><strong>Bloutub</strong></div><br>
         <ul class="Barre">
-            <li><span style="color: peru; font-weight: bold;">👤 <?php echo htmlspecialchars($_SESSION['user']['username']); ?></span></li>
+            <li><a href="#"><input type="text" placeholder="Rechercher..." class="search-input"><button type="submit" class="Brecherche">Rechercher</button></a></li> 
             <li class="push-right">
-                <button class="logout-btn" onclick="logout()">Déconnexion</button>
+                <div class="dropdown">
+                    <button class="dropbtn">Mon Compte ▼</button>
+                    <div class="dropdown-content">
+                        <a href="mes_creations.php">Mes créations</a>
+                        <a href="mes_favoris.php">Favoris</a>
+                        <a href="creation.php">Créer</a>
+                        <a href="menu.php">Menu Principal</a>
+                        <hr>
+                        <a href="admin_dashboard.php">Panneau Admin</a>
+                        <hr>
+                        <a href="deconnexion.php" class="deco">Déconnexion</a>
+                    </div>
+                </div>
             </li>
         </ul>
     </header>
 
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>👥 Gestion des utilisateurs</h1>
-        </div>
+    <h2 style="text-align: center; margin-top: 30px; color: peru;">👥 Gestion des utilisateurs</h2>
 
-        <div class="admin-nav">
-            <a href="admin_dashboard.php">Accueil</a>
-            <a href="admin_users.php" class="active">Utilisateurs</a>
-            <a href="admin_capsules.php">Capsules</a>
-            <a href="../php/menu.php">Retour site</a>
-        </div>
-
-        <div class="filter-section">
-            <input type="text" id="search" placeholder="Rechercher par nom ou email..." onkeyup="filterTable()">
-            <select id="roleFilter" onchange="filterTable()">
-                <option value="">Tous les rôles</option>
-                <option value="admin">Admin</option>
-                <option value="utilisateur">Utilisateur</option>
-            </select>
-        </div>
-
-        <table id="usersTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom d'utilisateur</th>
-                    <th>Email</th>
-                    <th>Rôle</th>
-                    <th>Date inscription</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $user): ?>
-                <tr class="user-row" data-username="<?php echo strtolower($user['nom_utilisateur']); ?>" data-email="<?php echo strtolower($user['email']); ?>" data-role="<?php echo $user['role']; ?>">
-                    <td><?php echo $user['id']; ?></td>
-                    <td><?php echo htmlspecialchars($user['nom_utilisateur']); ?></td>
-                    <td><?php echo htmlspecialchars($user['email']); ?></td>
-                    <td>
-                        <span class="badge <?php echo $user['role'] === 'admin' ? 'badge-admin' : 'badge-user'; ?>">
-                            <?php echo ucfirst($user['role']); ?>
-                        </span>
-                    </td>
-                    <td><?php echo date('d/m/Y H:i', strtotime($user['cree_le'])); ?></td>
-                    <td>
-                        <div class="action-buttons">
-                            <?php if ($user['role'] === 'utilisateur'): ?>
-                                <button class="btn-small btn-promote" onclick="promoteUser(<?php echo $user['id']; ?>)">Promouvoir</button>
-                            <?php else: ?>
-                                <button class="btn-small btn-edit" onclick="demoteUser(<?php echo $user['id']; ?>)">Rétrograder</button>
-                            <?php endif; ?>
-                            <?php if ($user['id'] !== $_SESSION['user']['id']): ?>
-                                <button class="btn-small btn-delete" onclick="deleteUser(<?php echo $user['id']; ?>, '<?php echo htmlspecialchars($user['nom_utilisateur']); ?>')">Supprimer</button>
-                            <?php endif; ?>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+    <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
+        <a href="admin_dashboard.php"><button class="Brecherche">Accueil Admin</button></a>
+        <a href="admin_users.php"><button class="Brecherche" style="background-color: rosybrown;">Gérer les Utilisateurs</button></a>
+        <a href="admin_capsules.php"><button class="Brecherche">Gérer les Capsules</button></a>
     </div>
 
+    <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+        <input type="text" id="search" placeholder="Rechercher par nom ou email..." onkeyup="filterTable()" style="padding: 10px; border-radius: 5px; border: 2px solid peru; outline: none; width: 250px;">
+        <select id="roleFilter" onchange="filterTable()" style="padding: 10px; border-radius: 5px; border: 2px solid peru; outline: none;">
+            <option value="">Tous les rôles</option>
+            <option value="admin">Admin</option>
+            <option value="utilisateur">Utilisateur</option>
+        </select>
+    </div>
+
+    <ul class="admin-bloc" id="usersGrid">
+        <?php foreach ($users as $user): ?>
+        <li class="user-item" data-username="<?php echo strtolower(htmlspecialchars($user['nom_utilisateur'])); ?>" data-email="<?php echo strtolower(htmlspecialchars($user['email'])); ?>" data-role="<?php echo htmlspecialchars($user['role']); ?>">
+            
+            <div style="text-align: center; flex-grow: 1;">
+                <h3 style="color: peru; margin: 0 0 10px 0; font-size: 24px;"><?php echo htmlspecialchars($user['nom_utilisateur']); ?></h3>
+                <p style="color: #666; margin: 5px 0; font-size: 14px;"><?php echo htmlspecialchars($user['email']); ?></p>
+                
+                <div style="margin: 15px 0;">
+                    <span style="background-color: <?php echo $user['role'] === 'admin' ? 'rgb(205, 121, 37)' : 'rosybrown'; ?>; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold;">
+                        <?php echo ucfirst($user['role']); ?>
+                    </span>
+                </div>
+                
+                <p style="font-size: 12px; color: #999; margin-top: 15px;">Inscrit le : <?php echo date('d/m/Y H:i', strtotime($user['cree_le'])); ?></p>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: center;">
+                <?php if ($user['role'] === 'utilisateur'): ?>
+                    <button onclick="promoteUser(<?php echo $user['id']; ?>)" style="background-color: peru; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.2s;">Promouvoir</button>
+                <?php else: ?>
+                    <button onclick="demoteUser(<?php echo $user['id']; ?>)" style="background-color: rosybrown; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.2s;">Rétrograder</button>
+                <?php endif; ?>
+                
+                <?php if ($user['id'] !== $_SESSION['user']['id']): ?>
+                    <button onclick="deleteUser(<?php echo $user['id']; ?>, '<?php echo addslashes(htmlspecialchars($user['nom_utilisateur'])); ?>')" style="background-color: rgb(165, 42, 42); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.2s;">Supprimer</button>
+                <?php endif; ?>
+            </div>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+
     <script>
+        // Le script de filtre a été adapté pour fonctionner avec les cartes au lieu du tableau
         function filterTable() {
             const search = document.getElementById('search').value.toLowerCase();
             const roleFilter = document.getElementById('roleFilter').value;
-            const rows = document.querySelectorAll('.user-row');
+            const items = document.querySelectorAll('.user-item');
 
-            rows.forEach(row => {
-                const username = row.dataset.username;
-                const email = row.dataset.email;
-                const role = row.dataset.role;
+            items.forEach(item => {
+                const username = item.dataset.username;
+                const email = item.dataset.email;
+                const role = item.dataset.role;
 
                 const matchesSearch = username.includes(search) || email.includes(search);
                 const matchesRole = roleFilter === '' || role === roleFilter;
 
-                row.style.display = matchesSearch && matchesRole ? '' : 'none';
+                item.style.display = matchesSearch && matchesRole ? '' : 'none';
             });
         }
 
+        // Les appels AJAX à ton fichier admin_process.php restent identiques !
         function promoteUser(userId) {
             if (confirm('Êtes-vous sûr de vouloir promouvoir cet utilisateur en admin ?')) {
                 updateUserRole(userId, 'admin');
@@ -324,12 +180,6 @@ $users = $stmt->fetchAll();
                 })
                 .catch(err => alert('Erreur réseau'));
             }
-        }
-
-        function logout() {
-            fetch('../php/logout.php').then(() => {
-                window.location.href = '../html/connexion.html';
-            });
         }
     </script>
 </body>

@@ -24,264 +24,121 @@ while ($row = $stmt->fetch()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des capsules - Admin</title>
     <link rel="stylesheet" href="../css/styles.css">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
-        }
-        header {
-            background-color: #f4f4f4;
-            padding: 15px 20px;
-            border-bottom: 2px solid rosybrown;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: peru;
-            margin-bottom: 10px;
-        }
-        .admin-container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        .admin-header {
+        .admin-bloc {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 3px solid peru;
-            padding-bottom: 15px;
-        }
-        .admin-header h1 {
-            color: peru;
-            font-size: 32px;
-        }
-        .admin-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
             flex-wrap: wrap;
-        }
-        .admin-nav a {
-            padding: 12px 20px;
-            background-color: peru;
-            color: bisque;
-            text-decoration: none;
-            border: 2px solid peru;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .admin-nav a:hover {
-            background-color: rgb(205, 121, 37);
-            border-color: rgb(205, 121, 37);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .admin-nav a.active {
-            background-color: rosybrown;
-            color: white;
-            border-color: rosybrown;
-        }
-        .capsules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 1200px;
         }
-        .capsule-card {
-            background: white;
-            border: 2px solid peru;
+        
+        .admin-bloc li {
+            flex: 1 0 300px;
+            max-width: 400px;
+            min-height: 300px;
+            background-color: bisque;
+            display: flex;
+            flex-direction: column;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            /* Zéro animation autorisée ici */
+            transition: none !important; 
+            transform: none !important;
         }
-        .capsule-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        .capsule-image {
+
+        .admin-capsule-img {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: linear-gradient(135deg, bisque 0%, #fff 100%);
-        }
-        .capsule-info {
-            padding: 15px;
-            background: linear-gradient(135deg, bisque 0%, #fff 100%);
-        }
-        .capsule-info h3 {
-            margin: 0 0 10px 0;
-            color: peru;
-            font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-weight: bold;
-        }
-        .capsule-info p {
-            margin: 5px 0;
-            color: #666;
-            font-size: 13px;
-        }
-        .capsule-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #999;
-        }
-        .favorite-badge {
-            background-color: rosybrown;
-            color: bisque;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: bold;
-        }
-        .capsule-actions {
-            display: flex;
-            gap: 5px;
-            margin-top: 10px;
-        }
-        .btn-small {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .btn-view {
-            background-color: peru;
-            color: bisque;
-        }
-        .btn-view:hover {
-            background-color: rgb(205, 121, 37);
-        }
-        .btn-delete {
-            background-color: rosybrown;
-            color: bisque;
-        }
-        .btn-delete:hover {
-            background-color: rgb(165, 42, 42);
-        }
-        .filter-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: linear-gradient(135deg, bisque 0%, #fff 100%);
-            border: 2px solid peru;
-            border-radius: 8px;
-        }
-        .filter-section input, .filter-section select {
-            padding: 8px 12px;
-            border: 2px solid peru;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-        .logout-btn {
-            background-color: rgb(205, 121, 37);
-            color: bisque;
-            padding: 12px 20px;
-            border: 2px solid rgb(205, 121, 37);
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .logout-btn:hover {
-            background-color: rosybrown;
-            border-color: rosybrown;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
+            border-radius: 8px 8px 0 0;
+            display: block;
+            margin-bottom: 15px;
+            /* Zéro animation sur l'image */
+            transition: none !important;
+            transform: none !important;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">🎬 BlOutub Admin</div>
+        <div class="logo"><strong>Bloutub</strong></div><br>
         <ul class="Barre">
-            <li><span style="color: peru; font-weight: bold;">👤 <?php echo htmlspecialchars($_SESSION['user']['username']); ?></span></li>
+            <li><a href="#"><input type="text" placeholder="Rechercher..." class="search-input"><button type="submit" class="Brecherche">Rechercher</button></a></li> 
             <li class="push-right">
-                <button class="logout-btn" onclick="logout()">Déconnexion</button>
+                <div class="dropdown">
+                    <button class="dropbtn">Mon Compte ▼</button>
+                    <div class="dropdown-content">
+                        <a href="mes_creations.php">Mes créations</a>
+                        <a href="mes_favoris.php">Favoris</a>
+                        <a href="creation.php">Créer</a>
+                        <a href="menu.php">Menu Principal</a>
+                        <hr>
+                        <a href="admin_dashboard.php">Panneau Admin</a>
+                        <hr>
+                        <a href="deconnexion.php" class="deco">Déconnexion</a>
+                    </div>
+                </div>
             </li>
         </ul>
     </header>
 
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>🎬 Gestion des capsules</h1>
-        </div>
+    <h2 style="text-align: center; margin-top: 30px; color: peru;">🎬 Gestion des capsules</h2>
 
-        <div class="admin-nav">
-            <a href="admin_dashboard.php">Accueil</a>
-            <a href="admin_users.php">Utilisateurs</a>
-            <a href="admin_capsules.php" class="active">Capsules</a>
-            <a href="../php/menu.php">Retour site</a>
-        </div>
+    <div style="display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap;">
+        <a href="admin_dashboard.php"><button class="Brecherche">Accueil Admin</button></a>
+        <a href="admin_users.php"><button class="Brecherche">Gérer les Utilisateurs</button></a>
+        <a href="admin_capsules.php"><button class="Brecherche" style="background-color: rosybrown;">Gérer les Capsules</button></a>
+    </div>
 
-        <div class="filter-section">
-            <input type="text" id="search" placeholder="Rechercher par description..." onkeyup="filterCapsules()">
-            <select id="sortBy" onchange="sortCapsules()">
-                <option value="recent">Plus récentes</option>
-                <option value="oldest">Plus anciennes</option>
-                <option value="title">Titre A-Z</option>
-            </select>
-        </div>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+        <input type="text" id="search" placeholder="Rechercher par description..." onkeyup="filterCapsules()" style="padding: 10px; border-radius: 5px; border: 2px solid peru; outline: none;">
+        <select id="sortBy" onchange="sortCapsules()" style="padding: 10px; border-radius: 5px; border: 2px solid peru; outline: none;">
+            <option value="recent">Plus récentes</option>
+            <option value="oldest">Plus anciennes</option>
+            <option value="title">Titre A-Z</option>
+        </select>
+    </div>
 
-        <?php if (empty($capsules)): ?>
-            <div class="empty-state">
-                <p>Aucune capsule trouvée</p>
-            </div>
-        <?php else: ?>
-            <div class="capsules-grid" id="capsulesGrid">
-                <?php foreach ($capsules as $capsule): ?>
-                <div class="capsule-card" data-description="<?php echo strtolower($capsule['description'] ?? ''); ?>" data-date="<?php echo $capsule['cree_le']; ?>">
-                    <img src="<?php echo htmlspecialchars($capsule['chemin_image']); ?>" alt="Capsule" class="capsule-image" onerror="this.src='../assets/placeholder.png'">
-                    <div class="capsule-info">
-                        <h3><?php echo htmlspecialchars(substr($capsule['description'] ?? 'Sans titre', 0, 50)); ?></h3>
-                        <p><strong>Auteur:</strong> <?php echo htmlspecialchars($capsule['nom_utilisateur']); ?></p>
-                        <p><strong>Email:</strong> <?php echo htmlspecialchars($capsule['email']); ?></p>
-                        <div class="capsule-meta">
-                            <span><?php echo date('d/m/Y H:i', strtotime($capsule['cree_le'])); ?></span>
-                            <?php if (isset($favorites_count[$capsule['id']])): ?>
-                                <span class="favorite-badge">❤️ <?php echo $favorites_count[$capsule['id']]; ?></span>
-                            <?php endif; ?>
-                        </div>
-                        <div class="capsule-actions">
-                            <a href="<?php echo htmlspecialchars($capsule['chemin_image']); ?>" target="_blank" class="btn-small btn-view">Voir</a>
-                            <button class="btn-small btn-delete" onclick="deleteCapsule(<?php echo $capsule['id']; ?>, '<?php echo htmlspecialchars(substr($capsule['nom_utilisateur'], 0, 20)); ?>')">Supprimer</button>
-                        </div>
+    <?php if (empty($capsules)): ?>
+        <p style="text-align: center; width: 100%; color: #999;">Aucune capsule trouvée.</p>
+    <?php else: ?>
+        <ul class="admin-bloc" id="capsulesGrid">
+            <?php foreach ($capsules as $capsule): ?>
+            <li class="capsule-item" data-description="<?php echo strtolower(htmlspecialchars($capsule['description'] ?? '')); ?>" data-date="<?php echo $capsule['cree_le']; ?>">
+                
+                <img src="<?php echo htmlspecialchars($capsule['chemin_image']); ?>" alt="Capsule" class="admin-capsule-img" onerror="this.src='../assets/placeholder.png'">
+                
+                <div style="width: 100%; padding: 0 15px; box-sizing: border-box; text-align: center; flex-grow: 1;">
+                    <h4 style="color: peru; margin: 0 0 5px 0; font-size: 16px;"><?php echo htmlspecialchars(substr($capsule['description'] ?? 'Sans titre', 0, 50)); ?></h4>
+                    <p style="font-size: 13px; margin: 3px 0; color: #333;"><strong>Auteur:</strong> <?php echo htmlspecialchars($capsule['nom_utilisateur']); ?></p>
+                    <p style="font-size: 13px; margin: 3px 0; color: #333;"><strong>Email:</strong> <?php echo htmlspecialchars($capsule['email']); ?></p>
+                    
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; font-size: 12px; color: #666;">
+                        <span><?php echo date('d/m/Y H:i', strtotime($capsule['cree_le'])); ?></span>
+                        <?php if (isset($favorites_count[$capsule['id']])): ?>
+                            <span style="background-color: rosybrown; color: white; padding: 3px 8px; border-radius: 12px; font-weight: bold;">❤️ <?php echo $favorites_count[$capsule['id']]; ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+
+                <div style="display: flex; gap: 10px; width: 100%; padding: 15px; box-sizing: border-box; justify-content: center; margin-top: auto;">
+                    <a href="<?php echo htmlspecialchars($capsule['chemin_image']); ?>" target="_blank" style="background-color: peru; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px; font-weight: bold; text-align: center; flex: 1; transition: 0.2s;">Voir</a>
+                    
+                    <button onclick="deleteCapsule(<?php echo $capsule['id']; ?>, '<?php echo addslashes(htmlspecialchars(substr($capsule['nom_utilisateur'], 0, 20))); ?>')" style="background-color: rosybrown; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; flex: 1; transition: 0.2s;">Supprimer</button>
+                </div>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 
     <script>
         function filterCapsules() {
             const search = document.getElementById('search').value.toLowerCase();
-            const cards = document.querySelectorAll('.capsule-card');
+            const cards = document.querySelectorAll('.capsule-item');
 
             cards.forEach(card => {
                 const description = card.dataset.description;
@@ -292,7 +149,7 @@ while ($row = $stmt->fetch()) {
         function sortCapsules() {
             const sortBy = document.getElementById('sortBy').value;
             const grid = document.getElementById('capsulesGrid');
-            const cards = Array.from(grid.querySelectorAll('.capsule-card'));
+            const cards = Array.from(grid.querySelectorAll('.capsule-item'));
 
             cards.sort((a, b) => {
                 if (sortBy === 'recent') {
@@ -326,12 +183,6 @@ while ($row = $stmt->fetch()) {
                 })
                 .catch(err => alert('Erreur réseau'));
             }
-        }
-
-        function logout() {
-            fetch('../php/logout.php').then(() => {
-                window.location.href = '../html/connexion.html';
-            });
         }
     </script>
 </body>
