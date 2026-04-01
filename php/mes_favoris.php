@@ -84,6 +84,15 @@ $favoriteCount = count($mes_favoris);
     <?php endif; ?>
 </ul>
 
+<div id="toast-container"></div>
+
 <script src="../js/menu.js"></script>
+<script src="../js/pagination.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const pagination = new Pagination('BLOC', 12);
+    pagination.initialize();
+  });
+</script>
 </body>
 </html>

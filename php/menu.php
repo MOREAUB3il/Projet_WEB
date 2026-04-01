@@ -94,6 +94,29 @@ try {
     <?php endif; ?>
 </ul>
 
+<div id="toast-container"></div>
+
 <script src="../js/menu.js"></script>
+<script src="../js/pagination.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const pagination = new Pagination('nav-links', 12);
+    pagination.initialize();
+    
+    // Intégrer la recherche
+    const searchBtn = document.querySelector('.Brecherche');
+    const searchInput = document.querySelector('.search-input');
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener('click', function() {
+        const term = searchInput.value.toLowerCase();
+        pagination.search(term);
+      });
+      searchInput.addEventListener('keyup', function() {
+        const term = searchInput.value.toLowerCase();
+        pagination.search(term);
+      });
+    }
+  });
+</script>
 </body>
 </html>

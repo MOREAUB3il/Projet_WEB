@@ -427,5 +427,147 @@ $isFavori = !empty($capsule['is_liked']);
             }
         });
     </script>
+
+    <!-- Section Commentaires -->
+    <div class="comments-section" style="max-width: 1200px; margin: 30px auto; padding: 20px;">
+        <h3 style="color: peru; margin-bottom: 20px;">Commentaires</h3>
+
+        <!-- Formulaire pour ajouter un commentaire (uniquement pour les autres utilisateurs) -->
+        <?php if ($user_id !== $capsule['utilisateur_id']): ?>
+            <div style="margin-bottom: 30px; padding: 15px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+                <textarea id="commentInput" placeholder="Ajouter un commentaire..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: Arial; resize: vertical; min-height: 80px; box-sizing: border-box;"></textarea>
+                <button onclick="submitComment(<?= $capsule['id'] ?>)" style="margin-top: 10px; padding: 10px 20px; background-color: peru; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Publier</button>
+            </div>
+        <?php else: ?>
+            <div style="margin-bottom: 30px; padding: 15px; background-color: #fff3cd; border-radius: 5px; border: 1px solid #ffc107; color: #856404;">
+                <p style="margin: 0;"><strong>ℹ️ Remarque :</strong> Vous ne pouvez pas commenter votre propre image.</p>
+            </div>
+        <?php endif; ?>
+
+        <!-- Liste des commentaires -->
+        <div id="commentsList" style="border-top: 2px solid #ddd; padding-top: 20px;">
+            <p style="text-align: center; color: #999;">Chargement des commentaires...</p>
+        </div>
+    </div>
+
+    <script>
+        // Charger les commentaires au chargement de la page
+        const currentUserId = <?= $_SESSION['user']['id'] ?? 0 ?>;
+        const currentUserRole = '<?= $_SESSION['user']['role'] ?? 'user' ?>';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComments(<?= $capsule['id'] ?>);
+        });
+
+        function loadComments(capsuleId) {
+            fetch(`../php/get_comments.php?capsule_id=${capsuleId}&page=1`)
+                .then(response => response.json())
+                .then(data => {
+                    const commentsList = document.getElementById('commentsList');
+                    
+                    if (data.comments.length === 0) {
+                        commentsList.innerHTML = '<p style="text-align: center; color: #999;">Aucun commentaire pour le moment.</p>';
+                        return;
+                    }
+
+                    commentsList.innerHTML = '';
+                    data.comments.forEach(comment => {
+                        // Vérifier si l'utilisateur actuel peut supprimer ce commentaire
+                        const canDelete = comment.user_id === currentUserId || currentUserRole === 'admin';
+                        const deleteBtn = canDelete ? `
+                            <button onclick="deleteComment(${comment.id})" style="background-color: #ff6b6b; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 10px; font-size: 12px;">
+                                🗑️ Supprimer
+                            </button>
+                        ` : '';
+
+                        const commentHTML = `
+                            <div style="padding: 15px; background-color: #f9f9f9; border-radius: 5px; margin-bottom: 15px; border-left: 3px solid peru;">
+                                <div style="display: flex; justify-content: space-between; align-items: start;">
+                                    <div style="flex: 1;">
+                                        <strong style="color: peru;">${comment.nom_utilisateur}</strong>
+                                        <small style="color: #999; display: block; margin-bottom: 5px;">${comment.cree_le}</small>
+                                        <p style="margin: 0; line-height: 1.5;">${comment.comment_text}</p>
+                                    </div>
+                                </div>
+                                ${deleteBtn}
+                            </div>
+                        `;
+                        commentsList.innerHTML += commentHTML;
+                    });
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    document.getElementById('commentsList').innerHTML = '<p style="color: red;">Erreur lors du chargement des commentaires.</p>';
+                });
+        }
+
+        function deleteComment(commentId) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('comment_id', commentId);
+
+            fetch('../php/delete_comment.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Recharger les commentaires
+                    loadComments(<?= $capsule['id'] ?>);
+                    alert('Commentaire supprimé avec succès');
+                } else {
+                    alert('Erreur : ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la suppression');
+            });
+        }
+
+        function submitComment(capsuleId) {
+            const commentInput = document.getElementById('commentInput');
+            const comment_text = commentInput.value.trim();
+
+            if (!comment_text) {
+                alert('Le commentaire ne peut pas être vide.');
+                return;
+            }
+
+            if (comment_text.length > 500) {
+                alert('Le commentaire ne doit pas dépasser 500 caractères.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('capsule_id', capsuleId);
+            formData.append('comment_text', comment_text);
+
+            fetch('../php/comment_process.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Commentaire publié !');
+                        commentInput.value = '';
+                        loadComments(capsuleId); // Recharger les commentaires
+                    } else {
+                        alert('Erreur: ' + (data.message || 'Impossible de publier le commentaire'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Erreur lors de la publication du commentaire.');
+                });
+        }
+    </script>
+
+    <script src="../js/pagination.js"></script>
 </body>
 </html>

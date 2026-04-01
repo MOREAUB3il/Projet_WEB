@@ -58,15 +58,21 @@ CREATE TABLE `favoris` (
   `cree_le` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `favoris`
---
 
 INSERT INTO `favoris` (`id`, `utilisateur_id`, `capsule_id`, `cree_le`) VALUES
 (1, 3, 1, '2026-04-01 00:02:49'),
 (2, 3, 2, '2026-04-01 00:11:47'),
 (15, 4, 7, '2026-04-01 15:01:07'),
 (16, 4, 1, '2026-04-01 16:46:40');
+
+
+CREATE TABLE `commentaires` (
+  `id` int(11) NOT NULL,
+  `capsule_id` int(11) NOT NULL,
+  `utilisateur_id` int(11) NOT NULL,
+  `comment_text` text NOT NULL,
+  `cree_le` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -105,6 +111,14 @@ ALTER TABLE `capsules`
   ADD KEY `utilisateur_id` (`utilisateur_id`);
 
 --
+-- Index pour la table `commentaires`
+--
+ALTER TABLE `commentaires`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `capsule_id` (`capsule_id`),
+  ADD KEY `utilisateur_id` (`utilisateur_id`);
+
+--
 -- Index pour la table `favoris`
 --
 ALTER TABLE `favoris`
@@ -131,6 +145,12 @@ ALTER TABLE `capsules`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT pour la table `commentaires`
+--
+ALTER TABLE `commentaires`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `favoris`
 --
 ALTER TABLE `favoris`
@@ -151,6 +171,13 @@ ALTER TABLE `utilisateurs`
 --
 ALTER TABLE `capsules`
   ADD CONSTRAINT `capsules_ibfk_1` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `commentaires`
+--
+ALTER TABLE `commentaires`
+  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`capsule_id`) REFERENCES `capsules` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `commentaires_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `favoris`
