@@ -64,7 +64,7 @@ try {
                         <a href="admin_dashboard.php"> Panneau Admin</a>
                     <?php endif; ?>
                     <hr>
-                    <a href="../php/page_accueil.php" class="deco">Déconnexion</a>
+                    <a href="../php/page_acceuil.php" class="deco">Déconnexion</a>
                 </div>
             </div>
         </li>
