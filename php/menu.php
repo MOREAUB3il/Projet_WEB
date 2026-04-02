@@ -40,7 +40,12 @@ try {
 <body> <header>
     <div class="logo"><strong>Bloutub</strong></div><br>
     <ul class="Barre">
-        <li><a href="#"><input type="text" placeholder="Rechercher..." class="search-input"><button type="submit" class="Brecherche">Rechercher</button></a></li> 
+        <li>
+                <form action="recherche.php" method="GET" style="display: flex; margin: 0; padding: 0;">
+                    <input type="text" name="q" placeholder="Rechercher..." class="search-input" required>
+                    <button type="submit" class="Brecherche">Rechercher</button>
+                </form>
+        </li>
         <li class="push-right">
             <div class="dropdown">
                 <button class="dropbtn">Mon Compte ▼</button>
@@ -53,7 +58,7 @@ try {
                         <a href="admin_dashboard.php"> Panneau Admin</a>
                     <?php endif; ?>
                     <hr>
-                    <a href="../html/page_accueil.html" class="deco">Déconnexion</a>
+                    <a href="../php/page_accueil.php" class="deco">Déconnexion</a>
                 </div>
             </div>
         </li>

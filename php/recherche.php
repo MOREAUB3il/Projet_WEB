@@ -2,7 +2,6 @@
 session_start();
 require_once __DIR__ . '/bdd.php';
 
-// 1. Sécurité : on bloque l'accès si on n'est pas connecté
 if (!isset($_SESSION['user'])) {
     header('Location: ../html/connexion.html');
     exit;
@@ -10,25 +9,34 @@ if (!isset($_SESSION['user'])) {
 
 $user_id = $_SESSION['user']['id'];
 
+$q = trim($_GET['q'] ?? '');
+
 try {
-    // 2. Compteur pour le menu déroulant
+    // 1. Compteur pour le menu
     $countStmt = $pdo->prepare('SELECT COUNT(*) FROM favoris WHERE utilisateur_id = ?');
     $countStmt->execute([$user_id]);
     $favoriteCount = (int) $countStmt->fetchColumn();
 
-    // 3. Ta requête pour récupérer UNIQUEMENT tes capsules
-    $stmt = $pdo->prepare('
-        SELECT c.*, u.nom_utilisateur, f.id AS is_liked 
-        FROM capsules c 
-        JOIN utilisateurs u ON c.utilisateur_id = u.id 
-        LEFT JOIN favoris f ON (f.capsule_id = c.id AND f.utilisateur_id = ?)
-        WHERE c.utilisateur_id = ? 
-        ORDER BY c.cree_le DESC
-    ');
-    $stmt->execute([$user_id, $user_id]);
+    $capsules = [];
     
-    // 4. On récupère les résultats
-    $capsules = $stmt->fetchAll();
+    // 2. Recherche en BDD
+    if (!empty($q)) {
+        $stmt = $pdo->prepare('
+            SELECT c.*, u.nom_utilisateur, f.id AS is_liked 
+            FROM capsules c 
+            JOIN utilisateurs u ON c.utilisateur_id = u.id 
+            LEFT JOIN favoris f ON (f.capsule_id = c.id AND f.utilisateur_id = :user_id)
+            WHERE c.description LIKE :search OR u.nom_utilisateur LIKE :search
+            ORDER BY c.cree_le DESC
+        ');
+        
+        $stmt->execute([
+            ':user_id' => $user_id,
+            ':search' => '%' . $q . '%'
+        ]);
+        
+        $capsules = $stmt->fetchAll();
+    }
 
 } catch (PDOException $e) {
     die("Erreur : " . $e->getMessage());
@@ -39,48 +47,74 @@ try {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes Créations - Bloutub</title>
+  <title>Recherche - Bloutub</title>
   <link rel="stylesheet" href="../css/styles.css">
+  <style>
+      .btn-annuler {
+          background-color: rosybrown;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 20px;
+          text-decoration: none;
+          font-weight: bold;
+          font-size: 14px;
+          display: inline-block;
+          transition: transform 0.2s, background-color 0.2s;
+      }
+      .btn-annuler:hover {
+          background-color: rgb(165, 42, 42); 
+          transform: scale(1.05);
+      }
+  </style>
 </head>
 <body> 
 <header>
     <div class="logo"><strong>Bloutub</strong></div><br>
     <ul class="Barre">
         <li>
-                <form action="recherche.php" method="GET" style="display: flex; margin: 0; padding: 0;">
-                    <input type="text" name="q" placeholder="Rechercher..." class="search-input" required>
-                    <button type="submit" class="Brecherche">Rechercher</button>
-                </form>
-            </li> 
+            <form action="recherche.php" method="GET" style="display: flex; margin: 0; padding: 0;">
+                <input type="text" name="q" placeholder="Rechercher..." class="search-input" value="<?= htmlspecialchars($q) ?>" required>
+                <button type="submit" class="Brecherche">Rechercher</button>
+            </form>
+        </li> 
         <li class="push-right">
             <div class="dropdown">
                 <button class="dropbtn">Mon Compte ▼</button>
                 <div class="dropdown-content">
+                    <a href="mes_creations.php">Mes créations</a>
                     <a href="mes_favoris.php">Favoris (<?= $favoriteCount ?>)</a>
                     <a href="creation.php">Créer</a>
-                    <a href="menu.php">Menu</a>
+                    <a href="menu.php">Menu Principal</a>
                     <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                         <hr>
-                        <a href="admin_dashboard.php"> Panneau Admin</a>
+                        <a href="admin_dashboard.php" style="color: #ffc107; font-weight: bold;">🛡️ Panneau Admin</a>
                     <?php endif; ?>
                     <hr>
-                    <a href="../php/page_accueil.php" class="deco">Déconnexion</a>
+                    <a href="deconnexion.php" class="deco">Déconnexion</a>
                 </div>
             </div>
         </li>
     </ul>
 </header>
 
-<h2 style="text-align:center; margin-top:20px;">Mes Créations</h2>
+<h2 style="text-align:center; margin-top:30px; margin-bottom: 10px; color: peru;">
+    Résultats de recherche pour "<?= htmlspecialchars($q) ?>"
+</h2>
+
+<div style="text-align: center; margin-bottom: 30px;">
+    <a href="menu.php" class="btn-annuler">✖ Annuler la recherche</a>
+</div>
 
 <ul class="BLOC" id="nav-links">
-    <?php if (empty($capsules)): ?>
-        <p style="text-align: center; width: 100%;">Vous n'avez pas encore créé de capsule. <a href="creation.php" style="color: peru;">Créez-en une ici !</a></p>
+    <?php if (empty($q)): ?>
+        <p style="text-align: center; width: 100%; color: #999;">Veuillez entrer un mot-clé dans la barre de recherche en haut.</p>
+    <?php elseif (empty($capsules)): ?>
+        <p style="text-align: center; width: 100%; color: #999;">Oups ! Aucune capsule ne correspond à "<?= htmlspecialchars($q) ?>".</p>
     <?php else: ?>
         <?php foreach ($capsules as $capsule): ?>
             <li>
                 <a href="#">
-                    <img src="<?= htmlspecialchars($capsule['chemin_image']) ?>" alt="Capsule" class="menu-icon" onerror="this.src='../assets/image.png';">
+                    <img src="<?= htmlspecialchars($capsule['chemin_image']) ?>" alt="Capsule" class="menu-icon" onerror="this.src='../assets/placeholder.png';">
                     
                     <span>
                         <?= htmlspecialchars($capsule['description']) ?> <br>
@@ -88,12 +122,7 @@ try {
                     </span>
                 </a>
 
-                <div class="like" style="justify-content: space-between; width: 100%; padding: 0 20px 20px 20px; box-sizing: border-box;">
-                    
-                    <a href="editer_capsule.php?id=<?= $capsule['id'] ?>" style="background-color: #f39c12; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 14px; font-weight: bold; transition: 0.2s;">
-                        ✏️ Éditer
-                    </a>
-
+                <div class="like" style="justify-content: flex-end; width: 100%; padding: 0 20px 20px 20px; box-sizing: border-box;">
                     <div style="display: flex; gap: 15px;">
                         <?php $isFavori = !empty($capsule['is_liked']); ?>
                         <button class="heart-container <?= $isFavori ? 'is-active' : '' ?>" onclick="toggleHeart(this, <?= $capsule['id'] ?>)">
@@ -109,7 +138,6 @@ try {
                         </button>
                     </div>
                 </div>
-                </li>
             </li>
         <?php endforeach; ?>
     <?php endif; ?>

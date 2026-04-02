@@ -105,7 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <header>
      <div class="logo"><strong>Bloutub</strong></div><br>
     <ul class="Barre">
-        <li><a href="#"><input type="text" placeholder="Rechercher..." class="search-input"><button type="submit" class="Brecherche">Rechercher</button></a></li> 
+        <li>
+                <form action="recherche.php" method="GET" style="display: flex; margin: 0; padding: 0;">
+                    <input type="text" name="q" placeholder="Rechercher..." class="search-input" required>
+                    <button type="submit" class="Brecherche">Rechercher</button>
+                </form>
+            </li> 
         <li class="push-right">
             <a href="mes_creations.php" style="color: peru; font-weight: bold; text-decoration: none;">◀ Retour</a>
         </li>
@@ -133,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
     
-    <button type="submit" class="btn-modifier">💾 Enregistrer les modifications</button>
+    <button type="submit" class="btn-modifier">Enregistrer les modifications</button>
 </form>
 
 <script src="../js/creation.js"></script>
